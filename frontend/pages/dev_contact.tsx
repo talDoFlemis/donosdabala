@@ -55,7 +55,7 @@ function DevContact({ user }: Props) {
       initial="initial"
       animate="animate"
       variants={staggerContainer}
-      className="flex h-screen flex-col bg-[#383a59] p-8 font-Roboto text-drac_foreground"
+      className="flex min-h-screen flex-col bg-[#383a59] p-8 font-Roboto text-drac_foreground"
     >
       <Link href="/">
         <a>
@@ -68,12 +68,12 @@ function DevContact({ user }: Props) {
       >
         Contato do Desenvolvedor
       </motion.h1>
-      <div className="my-auto mx-auto grid h-1/2 w-1/2 grid-cols-2 place-items-center gap-8">
+      <div className="my-auto mx-auto grid grid-rows-2 place-items-center gap-8 lg:grid-cols-2 lg:grid-rows-none xl:h-1/2 xl:w-1/2">
         <motion.div
           initial="initial"
           animate="animate"
           variants={apokaoContainer}
-          className="mx-auto flex h-full w-full flex-col items-center space-y-4"
+          className="mx-auto mt-16 flex h-full w-full flex-col items-center space-y-4 lg:mt-0"
         >
           <div className="mask mask-circle relative h-full w-full">
             <a href={user.url}>
@@ -102,7 +102,10 @@ function DevContact({ user }: Props) {
             </CopyToClipboard>
           </motion.div>
         </motion.div>
-        <motion.div variants={card} className="card bg-[#22212d] text-xl">
+        <motion.div
+          variants={card}
+          className="card bg-[#22212d] text-xl md:w-2/3 lg:w-full"
+        >
           <div className="card-body space-y-4 text-[#f4f466] ">
             <motion.div
               variants={fadeInY}

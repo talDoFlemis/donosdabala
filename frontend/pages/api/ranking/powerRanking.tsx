@@ -22,7 +22,6 @@ export default async function handler(
                 data {
                   id
                   attributes {
-                    title
                     slug
                     week
                   }
@@ -36,23 +35,6 @@ export default async function handler(
       } catch (error) {
         console.log(error)
         res.status(500).json({ sucess: false, Error })
-      }
-      break
-    case "POST":
-      {
-        try {
-          const { is_selected, slug, week, ranking } = req.body
-          const powerRankingCreated = await PowerRanking.create({
-            is_selected,
-            slug,
-            week,
-            ranking,
-          })
-          res.status(201).json(powerRankingCreated)
-        } catch (error) {
-          console.log(error)
-          res.status(500).json({ sucess: false, Error })
-        }
       }
       break
   }
