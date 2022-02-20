@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_times_team_bodies",
+  "info": {
+    "displayName": "team_body",
+    "icon": "chalkboard"
+  },
+  "options": {},
+  "attributes": {
+    "team_pros": {
+      "type": "richtext"
+    },
+    "team_cons": {
+      "type": "richtext"
+    },
+    "team_anotations": {
+      "type": "richtext"
+    }
+  }
+}

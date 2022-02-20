@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "power_ranking_apokaos",
+  "info": {
+    "singularName": "power-ranking-apokao",
+    "pluralName": "power-ranking-apokaos",
+    "displayName": "Power Ranking Apokao",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "week": {
+      "type": "integer"
+    },
+    "team": {
+      "displayName": "team",
+      "type": "component",
+      "repeatable": true,
+      "component": "times.team"
+    }
+  }
+}

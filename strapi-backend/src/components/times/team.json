@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_times_teams",
+  "info": {
+    "displayName": "team",
+    "icon": "ad"
+  },
+  "options": {},
+  "attributes": {
+    "team_info": {
+      "displayName": "team_info",
+      "type": "component",
+      "repeatable": false,
+      "component": "times.team-info"
+    },
+    "team_body": {
+      "displayName": "team_body",
+      "type": "component",
+      "repeatable": false,
+      "component": "times.team-body"
+    }
+  }
+}

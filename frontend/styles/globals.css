@@ -1,0 +1,43 @@
+@import url("/fonts/stylesheet.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bgWallBrickDarken {
+  background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.178),
+      rgba(0, 0, 0, 0.836)
+    ),
+    url("/brickWall.jpg");
+}
+
+@layer components {
+  .headerLogoGradient {
+    @apply bg-gradient-to-b  bg-clip-text font-logo text-transparent;
+  }
+}
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
+.swiper-button-next {
+  color: #fff !important;
+}
+.swiper-button-prev {
+  color: #fff !important;
+}
+
+.swiper-pagination-bullet {
+  background-color: #fff !important;
+}
