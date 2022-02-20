@@ -4,31 +4,123 @@ import { rankingTeams } from "../../../typings"
 import dbConnect from "../../../utils/dbConnect"
 import cl from "clsx"
 import Image from "next/image"
+import ApokaIcon from "../../../public/apokaIcon.png"
+import { useRouter } from "next/router"
+import { motion } from "framer-motion"
+import {
+  buttonPopUp,
+  cardY,
+  fadeInHeader,
+  fadeInY,
+  imageContainer,
+  imageFloating,
+  row,
+  staggerContainer,
+} from "../../../framerMotion/CommunityRankingVariants"
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  HomeIcon,
+} from "@heroicons/react/outline"
+import Link from "next/link"
+import IconLink from "../../../components/dashboard/IconLink"
 
 interface Props {
   ranking: rankingTeams
+  allRankingsSlugs: any
 }
 
-function RankingTeamsSemana({ ranking }: Props) {
+function RankingTeamsSemana({ ranking, allRankingsSlugs }: Props) {
+  const router = useRouter()
+  const currentRankingIndex = allRankingsSlugs?.findIndex(
+    (e: any) => e === router.query.slug
+  )
   return (
-    <div className="flex min-h-screen flex-col items-center space-y-16 bg-[#11041d] px-4 pt-16 text-white  lg:px-8 lg:pt-8">
-      <div className=" text-center font-logo">
-        <h1 className="text-6xl">Ranking dos Times</h1>
-        <h3 className="mt-4 text-5xl">Semana {ranking.week}</h3>
-      </div>
-      <div>
-        {" "}
-        <div className="transition-transform duration-300 ease-in-out hover:scale-110">
-          <Image src={ranking.ranking[0].team_image} width={300} height={300} />
+    <motion.div
+      variants={staggerContainer}
+      initial="initial"
+      animate="animate"
+      className="flex min-h-screen flex-col bg-[#11041d] text-drac_foreground"
+    >
+      <nav className="grid grid-cols-3 place-items-center p-2 md:mx-8">
+        <div className="justify-self-start">
+          <IconLink link="/community_ranking/" Icon={HomeIcon} text="Home" />
         </div>
-        <h1 className="mt-8 text-center font-logo text-5xl uppercase">
-          {ranking.ranking[0].team_name}
-        </h1>
+        {allRankingsSlugs && (
+          <div className="flex items-center space-x-4">
+            {allRankingsSlugs[currentRankingIndex - 1] ? (
+              <IconLink
+                link={`/community_ranking/teams/${
+                  allRankingsSlugs[currentRankingIndex - 1]
+                }`}
+                Icon={ArrowLeftIcon}
+              />
+            ) : (
+              <ArrowLeftIcon className="m-2 h-8 w-8 text-gray-500" />
+            )}
+            <h1 className="text-center text-xl md:text-3xl">
+              Semana {ranking.week}
+            </h1>
+            {allRankingsSlugs[currentRankingIndex + 1] ? (
+              <IconLink
+                link={`/community_ranking/teams/${
+                  allRankingsSlugs[currentRankingIndex + 1]
+                }`}
+                Icon={ArrowRightIcon}
+              />
+            ) : (
+              <ArrowRightIcon className="m-2 h-8 w-8 text-gray-500" />
+            )}
+          </div>
+        )}
+        <div className="justify-self-end">
+          <Link href="power_ranking">
+            <div className="flex cursor-pointer flex-col items-center rounded-md p-2 hover:bg-[#44202e] hover:text-[#f34b5a]">
+              <div>
+                <Image src={ApokaIcon} width={50} height={50} />
+              </div>
+              <h3 className="hidden md:inline-flex">Power Ranking</h3>
+            </div>
+          </Link>
+        </div>
+      </nav>
+      <motion.h1
+        variants={fadeInHeader}
+        className="text-center font-logo text-7xl"
+      >
+        Ranking dos Times
+      </motion.h1>
+
+      <div className="mx-auto my-8">
+        <motion.div variants={imageContainer}>
+          <motion.div variants={imageFloating}>
+            <div>
+              <Image
+                src={ranking.ranking[0].team_image}
+                height={300}
+                width={300}
+              />
+            </div>
+          </motion.div>
+          <motion.h1
+            variants={fadeInY}
+            className="text-center font-logo text-5xl"
+          >
+            {ranking.ranking[0].team_name}
+          </motion.h1>
+          <motion.h2 variants={fadeInY} className="text-center text-4xl">
+            {ranking.ranking[0].team_votes_porcentage} %
+          </motion.h2>
+        </motion.div>
       </div>
-      <div className="card  w-screen bg-white font-bold text-black md:w-2/3 lg:w-3/5 xl:w-2/5 2xl:w-1/3">
+      <motion.div
+        variants={cardY}
+        className="md:1/2 card mx-auto w-2/3 bg-white font-bold text-black lg:w-1/3"
+      >
         <div className="card-body">
           {ranking.ranking.map((team, index) => (
-            <div
+            <motion.div
+              variants={row}
               key={team._id}
               className={cl(
                 "mb-4 flex cursor-pointer items-center justify-between rounded-md px-4 py-1 transition-colors ease-in-out hover:bg-accent hover:text-white",
@@ -67,11 +159,11 @@ function RankingTeamsSemana({ ranking }: Props) {
                   <div className="badge badge-sm"></div>
                 )}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
 
@@ -97,9 +189,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const getRanking = await RankingTeams.find({ slug: params?.slug })
   const ranking = await JSON.parse(JSON.stringify(getRanking[0]))
 
+  const getAllRankings = await RankingTeams.find({})
+  const allRankings = await JSON.parse(JSON.stringify(getAllRankings))
+  const allRankingsSlugs = allRankings.map((rank: any) => rank.slug)
+
   return {
     props: {
       ranking,
+      allRankingsSlugs,
     },
   }
 }

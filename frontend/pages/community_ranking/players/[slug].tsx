@@ -1,74 +1,172 @@
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  HomeIcon,
+  UserGroupIcon,
+} from "@heroicons/react/outline"
 import cl from "clsx"
 import { GetStaticPaths, GetStaticProps } from "next"
 import Image from "next/image"
+import Link from "next/link"
+import IconLink from "../../../components/dashboard/IconLink"
 import RankingPlayer from "../../../models/RankingPlayerModel"
 import { rankingPlayers } from "../../../typings"
 import dbConnect from "../../../utils/dbConnect"
+import ApokaIcon from "../../../public/apokaIcon.png"
+import { useRouter } from "next/router"
+import { motion } from "framer-motion"
+import {
+  buttonPopUp,
+  cardY,
+  fadeInHeader,
+  fadeInY,
+  imageContainer,
+  imageFloating,
+  row,
+  staggerContainer,
+} from "../../../framerMotion/CommunityRankingVariants"
 
 interface Props {
   ranking: rankingPlayers
+  allRankingsSlugs: []
 }
 
-function RankingPlayerSemana({ ranking }: Props) {
+function RankingPlayerSemana({ ranking, allRankingsSlugs }: Props) {
+  const router = useRouter()
+  const currentRankingIndex = allRankingsSlugs?.findIndex(
+    (e: any) => e === router.query.slug
+  )
   return (
-    <div className="flex min-h-screen flex-col items-center space-y-16 bg-[#11041d] px-4 pt-16 text-white  lg:px-8 lg:pt-8">
-      <div className="text-center font-logo">
-        <h1 className="text-6xl">Ranking dos Jogadores</h1>
-        <h2 className="text-5xl">Semana {ranking.week}</h2>
-      </div>
-      <div className="grid grid-cols-3 grid-rows-2 font-bold">
-        <div className="group col-start-2 flex scale-110  cursor-pointer flex-col items-center transition-transform">
-          <div className="avatar">
-            <div className="animate-bounce rounded-full ring ring-accent transition-colors duration-300 group-hover:bg-accent">
-              <Image src={ranking.playerOfWeek.img} width={150} height={150} />
-            </div>
-          </div>
-          <h1 className="mt-2 font-logo text-3xl font-normal uppercase">
-            {ranking.playerOfWeek.name}
-          </h1>
-          <h2 className="text-sm text-gray-400">
-            {ranking.poll.poll_answers[0]?.votes}
-          </h2>
+    <motion.div
+      variants={staggerContainer}
+      initial="initial"
+      animate="animate"
+      className="flex min-h-screen flex-col bg-[#11041d] text-drac_foreground"
+    >
+      <nav className="grid grid-cols-3 place-items-center p-2 md:mx-8">
+        <div className="justify-self-start">
+          <IconLink link="/community_ranking/" Icon={HomeIcon} text="Home" />
         </div>
-        <div className="group col-start-1 row-start-2 flex cursor-pointer flex-col items-center transition-transform hover:scale-110">
-          <div className="avatar ">
-            <div className="rounded-full ring ring-secondary transition-colors duration-300 group-hover:bg-secondary">
-              <Image
-                src={ranking.poll.poll_answers[1].img}
-                width={150}
-                height={150}
+        {allRankingsSlugs && (
+          <div className="flex items-center space-x-4">
+            {allRankingsSlugs[currentRankingIndex - 1] ? (
+              <IconLink
+                link={`/community_ranking/players/${
+                  allRankingsSlugs[currentRankingIndex - 1]
+                }`}
+                Icon={ArrowLeftIcon}
               />
-            </div>
-          </div>
-          <h1 className="mt-4 font-logo text-2xl font-normal uppercase">
-            {ranking.poll.poll_answers[1]?.answer}
-          </h1>
-          <h2 className="text-sm text-gray-400">
-            {ranking.poll.poll_answers[1]?.votes}
-          </h2>
-        </div>
-        <div className="group col-start-3 row-start-2 flex cursor-pointer flex-col items-center transition-transform hover:scale-110">
-          <div className="avatar ">
-            <div className="rounded-full ring ring-twitterBlue transition-colors duration-300 group-hover:bg-twitterBlue">
-              <Image
-                src={ranking.poll.poll_answers[2].img}
-                width={150}
-                height={150}
+            ) : (
+              <ArrowLeftIcon className="m-2 h-8 w-8 text-gray-500" />
+            )}
+            <h1 className="text-center text-xl md:text-3xl">
+              Semana {ranking.week}
+            </h1>
+            {allRankingsSlugs[currentRankingIndex + 1] ? (
+              <IconLink
+                link={`/community_ranking/players/${
+                  allRankingsSlugs[currentRankingIndex + 1]
+                }`}
+                Icon={ArrowRightIcon}
               />
-            </div>
+            ) : (
+              <ArrowRightIcon className="m-2 h-8 w-8 text-gray-500" />
+            )}
           </div>
-          <h1 className="mt-4 font-logo text-2xl font-normal uppercase">
-            {ranking.poll.poll_answers[2]?.answer}
-          </h1>
-          <h2 className="text-sm text-gray-400">
-            {ranking.poll.poll_answers[2]?.votes}
-          </h2>
+        )}
+        <div className="justify-self-end">
+          <Link href="power_ranking">
+            <div className="flex cursor-pointer flex-col items-center rounded-md p-2 hover:bg-[#44202e] hover:text-[#f34b5a]">
+              <div>
+                <Image src={ApokaIcon} width={50} height={50} />
+              </div>
+              <h3 className="hidden md:inline-flex">Power Ranking</h3>
+            </div>
+          </Link>
         </div>
+      </nav>
+      <motion.h1
+        variants={fadeInHeader}
+        className="text-center font-logo text-7xl"
+      >
+        Ranking dos Jogadores
+      </motion.h1>
+
+      <div className="mx-auto mb-8 grid h-[40vh] grid-cols-3 lg:w-1/2">
+        <motion.div
+          variants={imageContainer}
+          className="self-end justify-self-center"
+        >
+          <Image
+            src={ranking.poll.poll_answers[1].img}
+            height={150}
+            width={150}
+          />
+          <motion.h1
+            variants={fadeInY}
+            className="text-center font-logo text-2xl"
+          >
+            {ranking.poll.poll_answers[1].answer}
+          </motion.h1>
+          <motion.h2
+            variants={fadeInY}
+            className="text-center text-xl text-gray-300"
+          >
+            {ranking.poll.poll_answers[1].votes}
+          </motion.h2>
+        </motion.div>
+        <motion.div variants={imageContainer} className="place-self-center">
+          <motion.div variants={imageFloating}>
+            <Image
+              src={ranking.poll.poll_answers[0].img}
+              height={170}
+              width={170}
+            />
+          </motion.div>
+          <motion.h1
+            variants={fadeInY}
+            className="text-center font-logo text-3xl"
+          >
+            {ranking.poll.poll_answers[0].answer}
+          </motion.h1>
+          <motion.h2
+            variants={fadeInY}
+            className="text-center text-xl text-gray-300"
+          >
+            {ranking.poll.poll_answers[0].votes}
+          </motion.h2>
+        </motion.div>
+        <motion.div
+          variants={imageContainer}
+          className="self-end justify-self-center"
+        >
+          <Image
+            src={ranking.poll.poll_answers[2].img}
+            height={150}
+            width={150}
+          />
+          <motion.h1
+            variants={fadeInY}
+            className="text-center font-logo text-2xl"
+          >
+            {ranking.poll.poll_answers[2].answer}
+          </motion.h1>
+          <motion.h2
+            variants={fadeInY}
+            className="text-center text-xl text-gray-300"
+          >
+            {ranking.poll.poll_answers[2].votes}
+          </motion.h2>
+        </motion.div>
       </div>
-      <div className="md:1/2 card w-2/3 bg-white font-bold text-black lg:w-1/3">
+      <motion.div
+        variants={cardY}
+        className="md:1/2 card mx-auto w-2/3 bg-white font-bold text-black lg:w-1/3"
+      >
         <div className="card-body">
           {ranking.poll.poll_answers.map((player, index) => (
-            <div
+            <motion.div
+              variants={row}
               key={player._id}
               className={cl(
                 "mb-4 flex cursor-pointer items-center justify-between rounded-md px-4 py-1 transition-colors ease-in-out hover:bg-twitchPurple hover:text-white",
@@ -86,11 +184,11 @@ function RankingPlayerSemana({ ranking }: Props) {
               </div>
 
               <h3 className="font-normal ">{player.votes}</h3>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
 
@@ -118,9 +216,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const getRanking = await RankingPlayer.find({ slug: params?.slug })
   const ranking = await JSON.parse(JSON.stringify(getRanking[0]))
 
+  const getAllRankings = await RankingPlayer.find({})
+  const allRankings = await JSON.parse(JSON.stringify(getAllRankings))
+  const allRankingsSlugs = allRankings.map((rank: any) => rank.slug)
+
   return {
     props: {
       ranking,
+      allRankingsSlugs,
     },
   }
 }

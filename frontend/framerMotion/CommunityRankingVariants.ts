@@ -96,3 +96,27 @@ export const imageFloating: Variants = {
     },
   },
 }
+
+export const cardY: Variants = {
+  initial: { scaleY: 0 },
+  animate: {
+    scaleY: 1,
+    transition: {
+      staggerChildren: 0.2,
+      duration: 0.2,
+      ease: "easeIn",
+    },
+  },
+}
+
+export const row: Variants = {
+  initial: {
+    scale: 1.2,
+    opacity: 0,
+  },
+  animate: {
+    scale: 1,
+    opacity: 1,
+    transition: { duration: 0.3, ease: "linear" },
+  },
+}
