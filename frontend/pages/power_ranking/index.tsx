@@ -25,7 +25,7 @@ function PowerRankingIndex({ paths }: { paths: [] }) {
       variants={staggerContainer}
       initial="initial"
       animate="animate"
-      className="flex min-h-screen flex-col bg-drac_bg p-8 text-drac_foreground"
+      className="flex min-h-screen flex-col bg-[#14141b] p-8 text-drac_foreground"
     >
       <Link href="/">
         <a>
