@@ -19,5 +19,5 @@
    - Frontend on Vercel
 
 ## Installation
-For a full experience of Donos da Bala some enviroment variables is required that you can see on **.env.example** file.
+For a full experience of Donos da Bala some enviroment variables is required that you can see on **.env.example** on both backend and frontend.
 
