@@ -26,7 +26,7 @@
     "nextjs-progressbar": "^0.0.13",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-hook-form": "^7.26.0",
+    "react-hook-form": "^7.27.1",
     "react-intersection-observer": "^8.33.1",
     "swiper": "^8.0.6",
     "swr": "^1.2.1"
